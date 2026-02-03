@@ -14,21 +14,26 @@ pipeline {
             }
         }
 
-       stage("Checkout from SCM") {
+        stage("Checkout from SCM") {
             steps {
-            // Git checkout
-            git branch: 'main',
-            credentialsId: 'github',
-            url: 'https://github.com/Mohamed0emad/Food-Lover-main.git'
-        
-            // List files after checkout
-            sh "ls -al"
+                // shallow clone: commit واحد فقط
+                checkout([$class: 'GitSCM',
+                    branches: [[name: '*/main']],
+                    userRemoteConfigs: [[
+                        url: 'https://github.com/Mohamed0emad/Food-Lover-main.git',
+                        credentialsId: 'github'
+                    ]],
+                    extensions: [[
+                        $class: 'CloneOption', shallow: true, depth: 1, noTags: true, timeout: 10
+                    ]]
+                ])
+                sh "ls -al"
+            }
         }
-    }
-
 
         stage("Build Application") {
             steps {
+                // Use persistent Maven local repo for caching
                 sh 'mvn -Dmaven.repo.local=$HOME/.m2/repository clean package'
             }
         }
