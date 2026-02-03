@@ -14,14 +14,18 @@ pipeline {
             }
         }
 
-        stage("Checkout from SCM") {
+       stage("Checkout from SCM") {
             steps {
-                git branch: 'main',
-                    credentialsId: 'github',
-                    url: 'https://github.com/Mohamed0emad/Food-Lover-main.git',
-                sh "ls -al"
-            }
+            // Git checkout
+            git branch: 'main',
+            credentialsId: 'github',
+            url: 'https://github.com/Mohamed0emad/Food-Lover-main.git'
+        
+            // List files after checkout
+            sh "ls -al"
         }
+    }
+
 
         stage("Build Application") {
             steps {
