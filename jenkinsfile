@@ -19,7 +19,6 @@ pipeline {
                 git branch: 'main',
                     credentialsId: 'github',
                     url: 'https://github.com/Mohamed0emad/Food-Lover-main.git',
-                    shallow: true
                 sh "ls -al"
             }
         }
