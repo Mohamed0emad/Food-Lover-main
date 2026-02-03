@@ -18,19 +18,21 @@ pipeline {
             steps {
                 git branch: 'main',
                     credentialsId: 'github',
-                    url: 'https://github.com/Mohamed0emad/Food-Lover-main.git'
-                    sh "ls -al"
+                    url: 'https://github.com/Mohamed0emad/Food-Lover-main.git',
+                    shallow: true
+                sh "ls -al"
             }
         }
 
         stage("Build Application") {
             steps {
-                sh "mvn clean package"            }
+                sh 'mvn -Dmaven.repo.local=$HOME/.m2/repository clean package'
+            }
         }
 
         stage("Test Application") {
             steps {
-                sh "mvn test"
+                sh 'mvn -Dmaven.repo.local=$HOME/.m2/repository test'
             }
         }
 
